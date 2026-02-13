@@ -68,7 +68,7 @@ router.get('/personalized', authenticateToken, authorizeRole('CUSTOMER'), async 
             return res.status(403).json({ error: 'User is not a registered customer' });
         }
         
-        // Use the user_id directly - it will be passed to the customer_id parameter in the query
+        // Use the user_id directly 
         const [viewedResult, similarResult, trendingResult] = 
             await Recommendation.getPersonalizedRecommendations(userId);
 
@@ -86,7 +86,7 @@ router.get('/personalized', authenticateToken, authorizeRole('CUSTOMER'), async 
 // GET /api/recommendations/demand-analysis
 router.get('/demand-analysis', authenticateToken, authorizeRole('FARMER'), async (req, res) => {
     try {
-        // This implements the demand scoring function from your paper
+        // This implements the demand scoring function
         const farmerResult = await require('../models/farmerModel').findByUserId(req.user.user_id);
         if (farmerResult.rows.length === 0) {
             return res.status(403).json({ error: 'User is not a registered farmer' });
@@ -94,7 +94,7 @@ router.get('/demand-analysis', authenticateToken, authorizeRole('FARMER'), async
 
         const farmer_id = farmerResult.rows[0].farmer_id;
         
-        // Demand scoring query based on your paper's formula
+        // Demand scoring query 
         const demandQuery = `
             WITH product_metrics AS (
                 SELECT 
@@ -142,5 +142,6 @@ router.get('/demand-analysis', authenticateToken, authorizeRole('FARMER'), async
         res.status(500).json({ error: 'Server error' });
     }
 });
+
 
 module.exports = router;
